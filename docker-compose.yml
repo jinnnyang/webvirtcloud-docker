@@ -3,10 +3,9 @@ version: "3"
 networks:
   internet:
     external: true
-  proxy-untrusted:
-    external: true
-  #kvm_net:
-    #name: kvm_net
+  # kvm_net:
+    # external: true
+    # name: kvm_net
 
 services:
   webvirtcloud:
@@ -26,8 +25,7 @@ services:
     networks:
       internet:
         ipv4_address: 172.24.0.200
-      proxy-untrusted:
-      #kvm_net:
+      # kvm_net:
 
   # nginx:
     # image: weejewel/nginx-with-certbot
@@ -38,7 +36,6 @@ services:
       # - "443:443"
     # networks:
       # - internet
-      # - proxy-untrusted
     # volumes:
       # #- ./nginx/servers/:/etc/nginx/servers/
       # #- ./nginx/auth/:/etc/nginx/auth/
