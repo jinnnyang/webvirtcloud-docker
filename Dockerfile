@@ -1,7 +1,6 @@
 FROM phusion/baseimage:jammy-1.0.1
 
 EXPOSE 80
-EXPOSE 6080
 
 RUN echo 'APT::Get::Clean=always;' >> /etc/apt/apt.conf.d/99AutomaticClean
 
@@ -27,7 +26,7 @@ COPY . /srv/webvirtcloud
 RUN mkdir -p /srv/webvirtcloud/data
 RUN chown -R www-data:www-data /srv/webvirtcloud
 
-RUN sed -i "/SECRET_KEY/c\SECRET_KEY = \"$(python3 /srv/webvirtcloud/secret_generator.py)\"" /srv/webvirtcloud/webvirtcloud/settings.py
+RUN sed -i "/SECRET_KEY/c\SECRET_KEY = \"$(python3 /srv/webvirtcloud/webvirtcloud/secret_generator.py)\"" /srv/webvirtcloud/webvirtcloud/settings.py
 
 # Setup webvirtcloud
 WORKDIR /srv/webvirtcloud
