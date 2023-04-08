@@ -25,8 +25,9 @@ RUN apt-get update -qqy \
 
 COPY . /srv/webvirtcloud
 RUN mkdir -p /srv/webvirtcloud/data
-RUN mkdir -p /srv/webvirtcloud/config
 RUN chown -R www-data:www-data /srv/webvirtcloud
+
+RUN sed -i "/SECRET_KEY/c\SECRET_KEY = \"$(python3 /srv/webvirtcloud/secret_generator.py)\"" /srv/webvirtcloud/webvirtcloud/settings.py
 
 # Setup webvirtcloud
 WORKDIR /srv/webvirtcloud
@@ -48,10 +49,10 @@ RUN . venv/bin/activate && \
 RUN printf "\n%s" "daemon off;" >> /etc/nginx/nginx.conf && \
 	rm /etc/nginx/sites-enabled/default && \
 	chown -R www-data:www-data /var/lib/nginx
-RUN ln -s /srv/webvirtcloud/nginx.conf /etc/nginx/conf.d/webvirtcloud.conf
+RUN ln -s /srv/webvirtcloud/webvirtcloud/nginx.conf /etc/nginx/conf.d/webvirtcloud.conf
 
 # Define mountable directories.
-VOLUME ["/srv/webvirtcloud/data","/srv/webvirtcloud/config"]
+VOLUME ["/srv/webvirtcloud/data","/var/www/.ssh"]
 
 WORKDIR /srv/webvirtcloud
 COPY entrypoint.sh		/entrypoint.sh

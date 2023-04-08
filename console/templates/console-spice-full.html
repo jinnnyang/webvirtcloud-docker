@@ -45,8 +45,13 @@
         disconnect();
     }
 
+    function spice_query_var(name, defvalue) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : defvalue;
+    }
+
     function connect() {
-        var host, port, password, scheme = "ws://", uri;
+        var host, port, password;
 
         host = document.getElementById("host").value;
         port = document.getElementById("port").value;
@@ -57,12 +62,23 @@
             return;
         }
 
+        var path = spice_query_var('path', '{{ ws_path }}');
+
         if (sc) {
             sc.stop();
         }
-
-        // uri = scheme + host + ":" + port;
-        uri = scheme + "{{ ws_host }}:{{ ws_port }}{{ ws_path }}";
+        
+        var uri;
+        if (window.location.protocol === "https:") {
+            uri = 'wss';
+        } else {
+            uri = 'ws';
+        }
+        uri += '://' + host;
+        if (port) {
+            uri += ':' + port;
+        }
+        uri += '/' + path;
 
         document.getElementById('connectButton').innerHTML = "Stop";
         document.getElementById('connectButton').onclick = disconnect;

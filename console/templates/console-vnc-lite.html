@@ -165,8 +165,8 @@
 
     // Read parameters specified in the URL query string
     // By default, use the host and port of server that served this file
-    const host = readQueryVariable('host', '{{ ws_host }}');
-    let port = readQueryVariable('port', '{{ ws_port }}');
+    let host = window.location.hostname;
+    let port = window.location.port;
 
     {% if perms.instances.passwordless_console %}
         const password = '{{ console_passwd }}';

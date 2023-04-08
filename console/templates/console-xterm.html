@@ -22,10 +22,9 @@
 <script crossorigin="anonymous">
 	    Terminal.applyAddon(fit);
 
-        let host = readQueryVariable('host', '{{ socketio_host }}');
-        let port = readQueryVariable('port', '{{ socketio_port }}');
         let path = readQueryVariable('path', '{{ socketio_path }}');
-      
+        let host = window.location.hostname;
+        let port = window.location.port;
 
         // Build the websocket URL used to connect
         let url;

@@ -11,9 +11,79 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = ""
 
+#
+# WebVirtCloud settings
+#
+
+# socket public path
+WS_PATH = "novncd/"
+SOCKETIO_PATH = "socket.io/"
+
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+
+# Keepalive interval and count for libvirt connections
+LIBVIRT_KEEPALIVE_INTERVAL = 5
+LIBVIRT_KEEPALIVE_COUNT = 5
+
+ALLOW_EMPTY_PASSWORD = False
+NEW_USER_DEFAULT_INSTANCES = []
+SHOW_PROFILE_EDIT_PASSWORD = False
+
+# OTP Config
+OTP_ENABLED = False
+
+LOGIN_REQUIRED_IGNORE_VIEW_NAMES = ["accounts:login", "accounts:email_otp"]
+
+# EMAIL Config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+## sender's email-id
+EMAIL_HOST_USER = ''
+## password associated with above email-id
+EMAIL_HOST_PASSWORD = ''
+
+# LDAP Config
+#
+
+LDAP_ENABLED = False
+LDAP_URL = ''
+LDAP_PORT = 389
+USE_SSL = False
+## The user with search rights on ldap. (e.g cn=admin,dc=kendar,dc=org)
+LDAP_MASTER_DN = ''
+LDAP_MASTER_PW_ENC = ''
+LDAP_MASTER_PW = subprocess.Popen(["bash", str(BASE_DIR) + "/webvirtcloud/.dec_ldap_pwd.sh", LDAP_MASTER_PW_ENC],stdout=subprocess.PIPE, encoding='utf8').stdout.read().strip('\n')
+## The root dn (e.g. dc=kendar,dc=org)
+LDAP_ROOT_DN = ''
+## Queries to identify the users, i use groupOfUniqueNames on openldap
+
+### PLEASE BE SURE memberOf overlay is activated on slapd
+## e.g. memberOf=cn=admins,cn=staff,cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
+LDAP_SEARCH_GROUP_FILTER_ADMINS = ''
+## e.g. memberOf=cn=staff,cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
+LDAP_SEARCH_GROUP_FILTER_STAFF = ''
+## e.g. memberOf=cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
+LDAP_SEARCH_GROUP_FILTER_TECHNICIANS = ''
+## e.g. memberOf=cn=webvirtcloud,ou=groups,dc=kendar,dc=org
+LDAP_SEARCH_GROUP_FILTER_USERS = ''
+
+## The user name prefix to identify the user name (e.g. cn)
+LDAP_USER_UID_PREFIX = ''
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -107,7 +177,7 @@ DJANGO_ICONS = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": Path.joinpath(BASE_DIR, "db.sqlite3"),
+        "NAME": Path.joinpath(BASE_DIR, "data/db.sqlite3"),
     }
 }
 
@@ -119,16 +189,6 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = "/accounts/login/"
 
 LOGOUT_REDIRECT_URL = "/accounts/login/"
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
 
 STATIC_URL = "/static/"
 
@@ -181,41 +241,6 @@ LOGGING = {
     },
 }
 
-
-#
-# WebVirtCloud settings
-#
-
-# Websock port
-WS_PORT = 6080
-
-# Websock host
-WS_HOST = "0.0.0.0"
-
-# Websock public port - 80 or 443 if reverse-proxy, else 6080
-WS_PUBLIC_PORT = 6080
-
-# Websock public host
-WS_PUBLIC_HOST = None
-
-# Websock public path
-WS_PUBLIC_PATH = "/novncd/"
-
-# Websock Certificate for SSL
-WS_CERT = None
-
-SOCKETIO_PORT = 6081
-SOCKETIO_HOST = '0.0.0.0'
-
-# Socketio public host
-SOCKETIO_PUBLIC_HOST = None
-
-# Socketio public port - 80 or 443 if reverse-proxy, else 6081
-SOCKETIO_PUBLIC_PORT = 6081
-
-# Socketio public path
-SOCKETIO_PUBLIC_PATH = "socket.io/"
-
 # List of console listen addresses
 QEMU_CONSOLE_LISTENER_ADDRESSES = (
     ("127.0.0.1", "Localhost"),
@@ -258,55 +283,3 @@ QEMU_KEYMAPS = [
     "th",
     "tr",
 ]
-
-# Keepalive interval and count for libvirt connections
-LIBVIRT_KEEPALIVE_INTERVAL = 5
-LIBVIRT_KEEPALIVE_COUNT = 5
-
-ALLOW_EMPTY_PASSWORD = False
-NEW_USER_DEFAULT_INSTANCES = []
-SHOW_PROFILE_EDIT_PASSWORD = True
-
-
-# OTP Config
-OTP_ENABLED = False
-
-LOGIN_REQUIRED_IGNORE_VIEW_NAMES = ["accounts:login", "accounts:email_otp"]
-
-# EMAIL Config
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-## sender's email-id
-EMAIL_HOST_USER = ''
-## password associated with above email-id
-EMAIL_HOST_PASSWORD = ''
-
-# LDAP Config
-#
-
-LDAP_ENABLED = False
-LDAP_URL = ''
-LDAP_PORT = 389
-USE_SSL = False
-## The user with search rights on ldap. (e.g cn=admin,dc=kendar,dc=org)
-LDAP_MASTER_DN = ''
-LDAP_MASTER_PW_ENC = ''
-LDAP_MASTER_PW = subprocess.Popen(["bash", str(BASE_DIR) + "/webvirtcloud/.dec_ldap_pwd.sh", LDAP_MASTER_PW_ENC],stdout=subprocess.PIPE, encoding='utf8').stdout.read().strip('\n')
-## The root dn (e.g. dc=kendar,dc=org)
-LDAP_ROOT_DN = ''
-## Queries to identify the users, i use groupOfUniqueNames on openldap
-
-### PLEASE BE SURE memberOf overlay is activated on slapd
-## e.g. memberOf=cn=admins,cn=staff,cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
-LDAP_SEARCH_GROUP_FILTER_ADMINS = ''
-## e.g. memberOf=cn=staff,cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
-LDAP_SEARCH_GROUP_FILTER_STAFF = ''
-## e.g. memberOf=cn=technicians,cn=webvirtcloud,ou=groups,dc=kendar,dc=org
-LDAP_SEARCH_GROUP_FILTER_TECHNICIANS = ''
-## e.g. memberOf=cn=webvirtcloud,ou=groups,dc=kendar,dc=org
-LDAP_SEARCH_GROUP_FILTER_USERS = ''
-
-## The user name prefix to identify the user name (e.g. cn)
-LDAP_USER_UID_PREFIX = ''

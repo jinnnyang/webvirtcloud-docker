@@ -12,12 +12,8 @@ from appsettings.settings import app_settings
 from instances.models import Instance
 from vrtManager.instance import wvmInstance
 from webvirtcloud.settings import (
-    WS_PUBLIC_HOST,
-    WS_PUBLIC_PATH,
-    WS_PUBLIC_PORT,
-    SOCKETIO_PUBLIC_HOST,
-    SOCKETIO_PUBLIC_PORT,
-    SOCKETIO_PUBLIC_PATH,
+    WS_PATH,
+    SOCKETIO_PATH,
 )
 
 
@@ -79,26 +75,13 @@ def console(request):
         console_websocket_port = None
         console_passwd = None
 
-    ws_port = console_websocket_port if console_websocket_port else WS_PUBLIC_PORT
-    ws_host = WS_PUBLIC_HOST if WS_PUBLIC_HOST else request.get_host()
-    ws_path = WS_PUBLIC_PATH if WS_PUBLIC_PATH else "/"
-
-    if ":" in ws_host:
-        ws_host = re.sub(":[0-9]+", "", ws_host)
+    ws_path = WS_PATH if WS_PATH else "/"
 
     if console_type == "vnc" or console_type == "spice":
         console_page = "console-" + console_type + "-" + view_type + ".html"
         response = render(request, console_page, locals())
     elif console_type == "pty":
-        socketio_host = (
-            SOCKETIO_PUBLIC_HOST if SOCKETIO_PUBLIC_HOST else request.get_host()
-        )
-        socketio_port = SOCKETIO_PUBLIC_PORT if SOCKETIO_PUBLIC_PORT else 6081
-        socketio_path = SOCKETIO_PUBLIC_PATH if SOCKETIO_PUBLIC_PATH else "/"
-
-        if ":" in socketio_host:
-            socketio_host = re.sub(":[0-9]+", "", socketio_host)
-
+        socketio_path = SOCKETIO_PATH if SOCKETIO_PATH else "/"
         response = render(request, "console-xterm.html", locals())
     else:
         if console_type is None:

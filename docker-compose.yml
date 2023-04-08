@@ -2,11 +2,11 @@ version: "3"
 
 networks:
   internet:
-    external: true  
-  proxy:
     external: true
-  backend:
-    internal: true
+  proxy-untrusted:
+    external: true
+  kvm_net:
+    name: kvm_net
 
 services:
   webvirtcloud:
@@ -18,11 +18,16 @@ services:
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
-      #- ./data/:/srv/webvirtcloud/data/
+      - ./data/:/srv/webvirtcloud/data/
+      - ./ssh/:/var/www/.ssh
+      #- ./webvirtcloud/:/srv/webvirtcloud/webvirtcloud
+    environment:
+      KVM_HOST: "172.24.0.1"
     networks:
-      proxy:
       internet:
-        ipv4_address: 172.22.0.2
+        ipv4_address: 172.24.0.200
+      proxy-untrusted:
+      kvm_net:
 
   nginx:
     image: weejewel/nginx-with-certbot
@@ -33,7 +38,7 @@ services:
       - "443:443"
     networks:
       - internet
-      - proxy
+      - proxy-untrusted
     volumes:
       #- ./nginx/servers/:/etc/nginx/servers/
       #- ./nginx/auth/:/etc/nginx/auth/

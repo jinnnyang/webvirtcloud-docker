@@ -61,29 +61,6 @@
     }
 
     function connect(password) {
-        var host, port, scheme = "ws://", uri;
-
-        // By default, use the host and port of server that served this file
-        // host = spice_query_var('host', window.location.hostname);
-        host = '{{ ws_host| safe }}';
-
-        // Note that using the web server port only makes sense
-        //  if your web server has a reverse proxy to relay the WebSocket
-        //  traffic to the correct destination port.
-        var default_port = window.location.port;
-        if (!default_port) {
-            if (window.location.protocol == 'http:') {
-                default_port = 80;
-            }
-            else if (window.location.protocol == 'https:') {
-                default_port = 443;
-            }
-        }
-        //port = spice_query_var('port', default_port);
-        port = '{{ ws_port| safe }}';
-        if (window.location.protocol == 'https:') {
-            scheme = "wss://";
-        }
 
         // If a token variable is passed in, set the parameter in a cookie.
         // This is used by nova-spiceproxy.
@@ -104,22 +81,33 @@
 
         //var path = spice_query_var('path', 'websockify');
         var path = spice_query_var('path', '{{ ws_path }}');
+        let host = window.location.hostname;
+        let port = window.location.port;
 
-        if ((!host) || (!port)) {
-            console.log('{% trans "must specify host and port in URL" %}');
-            return;
+        if (!port) {
+            if (window.location.protocol == 'http:') {
+                port = 80;
+            }
+            else if (window.location.protocol == 'https:') {
+                port = 443;
+            }
         }
 
         if (sc) {
             sc.stop();
         }
-
-        // uri = scheme + host + ":" + port;
-        uri = scheme + "{{ ws_host }}:{{ ws_port }}";
-
-        if (path) {
-            uri += path[0] == '/' ? path : ('/' + path);
+        
+        var uri;
+        if (window.location.protocol === "https:") {
+            uri = 'wss';
+        } else {
+            uri = 'ws';
         }
+        uri += '://' + host;
+        if (port) {
+            uri += ':' + port;
+        }
+        uri += '/' + path;
 
         try {
             sc = new SpiceHtml5.SpiceMainConn({
@@ -131,7 +119,6 @@
             alert(e.toString());
             disconnect();
         }
-
     }
 
     function disconnect() {
