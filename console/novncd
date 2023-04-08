@@ -122,6 +122,7 @@ def get_connection_infos(token):
         console_host = conn.get_console_listener_addr()
         console_port = conn.get_console_port()
         console_socket = conn.get_console_socket()
+        connhost = "172.22.0.1"
     except Exception as e:
         logging.error(
             "Fail to retrieve console connection infos for token %s : %s" % (token, e)

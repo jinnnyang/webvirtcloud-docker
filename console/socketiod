@@ -187,7 +187,7 @@ def connect(sid, environ):
         uuid = conn.get_uuid()
         uri = conn.wvm.getURI()
 
-        subprocess.run(["conf/daemon/consolecallback", uri, uuid])
+        subprocess.run(["console/consolecallback", uri, uuid])
     else:
         # this is the parent process fork.
         sio.start_background_task(target=read_and_forward_pty_output)

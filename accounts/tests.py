@@ -55,7 +55,7 @@ class AccountsTestCase(TestCase):
         )
 
         # XML for testing vm
-        with open("conf/test-vm.xml", "r") as f:
+        with open("test-vm.xml", "r") as f:
             cls.xml = f.read()
 
         # Create testing vm from XML

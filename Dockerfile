@@ -3,10 +3,6 @@ FROM phusion/baseimage:jammy-1.0.1
 EXPOSE 80
 EXPOSE 6080
 
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
-
-
 RUN echo 'APT::Get::Clean=always;' >> /etc/apt/apt.conf.d/99AutomaticClean
 
 RUN apt-get update -qqy \
@@ -28,6 +24,7 @@ RUN apt-get update -qqy \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY . /srv/webvirtcloud
+RUN mkdir /srv/webvirtcloud/db
 RUN chown -R www-data:www-data /srv/webvirtcloud
 
 # Setup webvirtcloud
@@ -36,7 +33,7 @@ RUN python3 -m venv venv && \
 	. venv/bin/activate && \
 	pip3 install -U pip && \
 	pip3 install wheel && \
-	pip3 install -r conf/requirements.txt && \
+	pip3 install -r requirements.txt && \
 	pip3 cache purge && \
 	chown -R www-data:www-data /srv/webvirtcloud
 
@@ -50,20 +47,11 @@ RUN . venv/bin/activate && \
 RUN printf "\n%s" "daemon off;" >> /etc/nginx/nginx.conf && \
 	rm /etc/nginx/sites-enabled/default && \
 	chown -R www-data:www-data /var/lib/nginx
-
-COPY conf/nginx/webvirtcloud.conf /etc/nginx/conf.d/
-
-# Register services to runit
-RUN	mkdir /etc/service/nginx && \
-	mkdir /etc/service/nginx-log-forwarder && \
-	mkdir /etc/service/webvirtcloud && \
-	mkdir /etc/service/novnc
-COPY conf/runit/nginx				/etc/service/nginx/run
-COPY conf/runit/nginx-log-forwarder	/etc/service/nginx-log-forwarder/run
-COPY conf/runit/novncd.sh			/etc/service/novnc/run
-COPY conf/runit/webvirtcloud.sh		/etc/service/webvirtcloud/run
+RUN ln -s /srv/webvirtcloud/nginx.conf /etc/nginx/conf.d/webvirtcloud.conf
 
 # Define mountable directories.
 #VOLUME []
 
 WORKDIR /srv/webvirtcloud
+COPY entrypoint.sh		/entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
