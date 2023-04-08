@@ -29,20 +29,20 @@ services:
       proxy-untrusted:
       #kvm_net:
 
-  nginx:
-    image: weejewel/nginx-with-certbot
-    container_name: nginx
-    restart: unless-stopped
-    ports:
-      #- "80:80"
-      - "443:443"
-    networks:
-      - internet
-      - proxy-untrusted
-    volumes:
-      #- ./nginx/servers/:/etc/nginx/servers/
-      #- ./nginx/auth/:/etc/nginx/auth/
-      - ./nginx/.htpasswd:/etc/nginx/auth/.htpasswd
-      - ./nginx/servers.conf:/etc/nginx/servers/servers.conf
-      - ./nginx/certificate/:/etc/nginx/certificate
-      - ./nginx/letsencrypt/:/etc/letsencrypt/
+  # nginx:
+    # image: weejewel/nginx-with-certbot
+    # container_name: nginx
+    # restart: unless-stopped
+    # ports:
+      # - "80:80"
+      # - "443:443"
+    # networks:
+      # - internet
+      # - proxy-untrusted
+    # volumes:
+      # #- ./nginx/servers/:/etc/nginx/servers/
+      # #- ./nginx/auth/:/etc/nginx/auth/
+      # - ./nginx/.htpasswd:/etc/nginx/auth/.htpasswd
+      # - ./nginx/servers.conf:/etc/nginx/servers/servers.conf
+      # - ./nginx/certificate/:/etc/nginx/certificate
+      # - ./nginx/letsencrypt/:/etc/letsencrypt/
