@@ -1,0 +1,43 @@
+version: "3"
+
+networks:
+  internet:
+    external: true  
+  proxy:
+    external: true
+  backend:
+    internal: true
+
+services:
+  webvirtcloud:
+    image: "muratovas/webvirtcloud"
+    container_name: webvirtcloud
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/libvirt/:/var/run/libvirt/
+      - /dev/pts/:/dev/pts/
+      #- ./data/:/srv/webvirtcloud/data/
+    networks:
+      proxy:
+      internet:
+        ipv4_address: 172.22.0.2
+
+  nginx:
+    image: weejewel/nginx-with-certbot
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      #- "80:80"
+      - "443:443"
+    networks:
+      - internet
+      - proxy
+    volumes:
+      #- ./nginx/servers/:/etc/nginx/servers/
+      #- ./nginx/auth/:/etc/nginx/auth/
+      - ./nginx/.htpasswd:/etc/nginx/auth/.htpasswd
+      - ./nginx/servers.conf:/etc/nginx/servers/servers.conf
+      - ./nginx/certificate/:/etc/nginx/certificate
+      - ./nginx/letsencrypt/:/etc/letsencrypt/

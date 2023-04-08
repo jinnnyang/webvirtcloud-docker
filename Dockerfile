@@ -24,7 +24,8 @@ RUN apt-get update -qqy \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY . /srv/webvirtcloud
-RUN mkdir /srv/webvirtcloud/db
+RUN mkdir -p /srv/webvirtcloud/data
+RUN mkdir -p /srv/webvirtcloud/config
 RUN chown -R www-data:www-data /srv/webvirtcloud
 
 # Setup webvirtcloud
@@ -50,7 +51,7 @@ RUN printf "\n%s" "daemon off;" >> /etc/nginx/nginx.conf && \
 RUN ln -s /srv/webvirtcloud/nginx.conf /etc/nginx/conf.d/webvirtcloud.conf
 
 # Define mountable directories.
-#VOLUME []
+VOLUME ["/srv/webvirtcloud/data","/srv/webvirtcloud/config"]
 
 WORKDIR /srv/webvirtcloud
 COPY entrypoint.sh		/entrypoint.sh
