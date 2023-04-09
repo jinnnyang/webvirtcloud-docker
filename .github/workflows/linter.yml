@@ -75,6 +75,7 @@ jobs:
         VALIDATE_ANSIBLE: false
         VALIDATE_CLOJURE: false
         VALIDATE_COFFEE: false
+        VALIDATE_MARKDOWN: false
         VALIDATE_DART: false
         VALIDATE_GO: false
         VALIDATE_JSX: false

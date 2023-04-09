@@ -24,6 +24,7 @@ I plan to inherit changes from the mainline as much as possible.
 ### KVM config
 `/etc/libvirt/libvirtd.conf`
 ```bash
+unix_sock_rw_perms = "0770"
 unix_sock_group = "libvirt"
 auth_unix_rw = "none"
 ```
@@ -71,10 +72,10 @@ Set `QEMU_CONSOLE_LISTENER_ADDRESSES`.
 
 
 ## Work plan
-### FIXME
+### FIXME:
 - [ ] Integrate `gstfsd:16510`
 - [ ] Decide what to do with `migrations`
 
-### TODO
+### TODO:
 - [ ] Check `SSH` 
 - [ ] Delete all external dependencies `JS`
