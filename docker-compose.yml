@@ -17,14 +17,13 @@ services:
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
-      - ./data/:/srv/webvirtcloud/data/
-      - ./ssh/:/var/www/.ssh
-      #- ./webvirtcloud/:/srv/webvirtcloud/webvirtcloud
+      # - ./data:/srv/webvirtcloud/data
+      # - ./ssh:/var/www/.ssh
+      # - ./webvirtcloud:/srv/webvirtcloud/webvirtcloud
     environment:
       KVM_HOST: "172.24.0.1"
     networks:
       internet:
-        ipv4_address: 172.24.0.200
       # kvm_net:
 
   # nginx:
