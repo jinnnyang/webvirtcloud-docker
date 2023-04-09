@@ -1,5 +1,4 @@
 # WebVirtCloud-Docker
-###### Python 3.x & Django 3.2 LTS
 
 ![scr](./scr.png)
 
@@ -21,6 +20,13 @@ Vagrantfile, supervisor, runit)
 I plan to inherit changes from the mainline as much as possible.
 
 ## Install
+
+### KVM config
+`/etc/libvirt/libvirtd.conf`
+```bash
+unix_sock_group = "libvirt"
+auth_unix_rw = "none"
+```
 
 ### Container construction
 ```bash
@@ -59,12 +65,16 @@ Does not require special settings. I am using `nginx`.
 login: admin
 password: admin
 ```
+## Security
+Be careful to `/etc/libvirt/libvirtd.conf`.
+Set `QEMU_CONSOLE_LISTENER_ADDRESSES`.
+
 
 ## Work plan
-### FIXME:
+### FIXME
 - [ ] Integrate `gstfsd:16510`
 - [ ] Decide what to do with `migrations`
 
-### TODO:
+### TODO
 - [ ] Check `SSH` 
 - [ ] Delete all external dependencies `JS`
