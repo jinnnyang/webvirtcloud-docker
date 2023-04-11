@@ -1496,7 +1496,7 @@ def getvvfile(request, pk):
     response.writelines("[virt-viewer]\n")
     response.writelines("type=" + conn.graphics_type(instance.name) + "\n")
     if conn.graphics_listen(instance.name) == "0.0.0.0":
-        response.writelines("host=" + conn.host + "\n")
+        response.writelines("host=" + os.getenv("KVM_HOSTNAME") + "\n")
     else:
         response.writelines("host=" + conn.graphics_listen(instance.name) + "\n")
     response.writelines("port=" + conn.graphics_port(instance.name) + "\n")

@@ -1,6 +1,8 @@
 import json
 import socket
+import os
 
+from vrtManager.connection import CONN_SOCKET
 from accounts.models import UserInstance, UserSSHKey
 from computes.models import Compute
 from django.http import Http404, HttpResponse
@@ -89,6 +91,7 @@ def get_hostname_by_ip(ip):
 
 
 def get_vdi_url(request, compute_id, vname):
+    from instances.models import Instance
     """
     :param request:
     :param vname:
@@ -101,7 +104,10 @@ def get_vdi_url(request, compute_id, vname):
             compute.hostname, compute.login, compute.password, compute.type, vname
         )
 
-        fqdn = get_hostname_by_ip(compute.hostname)
+        if compute.type == CONN_SOCKET:
+            fqdn = os.getenv("KVM_HOSTNAME")
+        else:
+            fqdn = get_hostname_by_ip(compute.hostname)
         url = f"{conn.get_console_type()}://{fqdn}:{conn.get_console_port()}"
         response = url
         return HttpResponse(response)
