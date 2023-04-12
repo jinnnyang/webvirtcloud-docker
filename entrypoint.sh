@@ -1,8 +1,5 @@
 #!/bin/sh
 
-chown -R www-data:www-data /srv/webvirtcloud
-chown -R www-data:www-data /var/www/.ssh
-
 DJANGO_PROJECT=/srv/webvirtcloud
 PYTHON=$DJANGO_PROJECT/venv/bin/python3
 LOG=/var/log/entrypoint.log
