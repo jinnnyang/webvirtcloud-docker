@@ -18,7 +18,7 @@ services:
       - /dev/pts/:/dev/pts/
       - webvirtcloud_data:/srv/webvirtcloud/data
     networks:
-      - kvm_network
+      # - kvm_network
       - webvirtcloud_network
     extra_hosts:
       nas.local: 192.168.31.6
@@ -29,23 +29,24 @@ volumes:
   webvirtcloud_data:
     name: webvirtcloud_data
 
-# networks:
-#   kvm_network:
-#     name: kvm_network
-#     driver: macvlan
-#     driver_opts:
-#       parent: virbr0
-#       macvlan_mode: bridge
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: 192.168.122.0/24
-#           gateway: 192.168.122.1
-
 networks:
-  kvm_network: 
-    name: kvm_network
-    external: True
+  # kvm_network:
+  #   name: kvm_network
+  #   driver: macvlan
+  #   driver_opts:
+  #     parent: virbr0
+  #     macvlan_mode: bridge
+  #   ipam:
+  #     driver: default
+  #     config:
+  #       - subnet: 192.168.122.0/24
+  #         gateway: 192.168.122.1
   webvirtcloud_network:
     name: webvirtcloud_network
-    external: True
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.17.1.0/24
+          gateway: 172.17.1.1
+
