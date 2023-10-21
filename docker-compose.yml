@@ -12,13 +12,14 @@ services:
     container_name: webvirtcloud
     restart: unless-stopped
     ports:
-      - "80:80"
+      - 80:80
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
       - webvirtcloud_data:/srv/webvirtcloud/data
     networks:
       - kvm_network
+      - default
     extra_hosts:
       nas.local: 192.168.31.6
       nexus.nas.local: 192.168.31.6
@@ -35,3 +36,7 @@ networks:
     driver_opts:
       macvlan_mode: bridge
       parent: virbr0
+  
+  default:
+    name: bridge
+    external: True
