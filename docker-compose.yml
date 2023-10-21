@@ -6,6 +6,7 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile
+      network: host
       tags:
         - webvirtcloud:0.0.1
     container_name: webvirtcloud
@@ -23,6 +24,11 @@ services:
       KVM_HOSTNAME: "localhost"
     networks:
       - kvm_network
+    extra_hosts:
+      nas.local: 192.168.31.6
+      nexus.nas.local: 192.168.31.6
+      devpi.nas.local: 192.168.31.6
+
 
 volumes:
   webvirtcloud_data:
