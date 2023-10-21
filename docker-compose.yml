@@ -17,18 +17,12 @@ services:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
       - webvirtcloud_data:/srv/webvirtcloud/data
-      # - ./ssh:/var/www/.ssh
-      # - ./webvirtcloud:/srv/webvirtcloud/webvirtcloud
-    environment:
-      KVM_HOST: "172.24.0.1"
-      KVM_HOSTNAME: "localhost"
     networks:
       - kvm_network
     extra_hosts:
       nas.local: 192.168.31.6
       nexus.nas.local: 192.168.31.6
       devpi.nas.local: 192.168.31.6
-
 
 volumes:
   webvirtcloud_data:

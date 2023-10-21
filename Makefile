@@ -1,5 +1,5 @@
 build:
-	docker build -t webvirtcloud:0.0.1 .
+	docker build --network host -t webvirtcloud:0.0.1 .
 push: 
 	docker image tag webvirtcloud:0.0.1 harbor.nas.local/jinnyang/webvirtcloud:0.0.1
 	docker image push harbor.nas.local/jinnyang/webvirtcloud:0.0.1
