@@ -9,10 +9,14 @@ services:
       tags:
         - jinnyang/webvirtcloud:0.0.1
         - webvirtcloud:0.0.1
+    environment:
+      KVM_HOST: "192.168.122.1"
+      KVM_HOSTNAME: "localhost"
     container_name: WebVirtCloud
     restart: unless-stopped
     # ports:
     #   - 80:80
+
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
