@@ -6,7 +6,6 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile
-      network: host
       tags:
         - webvirtcloud:0.0.1
     container_name: webvirtcloud
