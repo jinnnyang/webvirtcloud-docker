@@ -1,15 +1,13 @@
 version: "3"
 
-networks:
-  internet:
-    external: true
-  # kvm_net:
-    # external: true
-    # name: kvm_net
-
 services:
   webvirtcloud:
-    image: "muratovas/webvirtcloud"
+    image: webvirtcloud:0.0.1
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+      tags:
+        - webvirtcloud:0.0.1
     container_name: webvirtcloud
     restart: unless-stopped
     ports:
@@ -17,29 +15,23 @@ services:
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
-      # - ./data:/srv/webvirtcloud/data
+      - webvirtcloud_data:/srv/webvirtcloud/data
       # - ./ssh:/var/www/.ssh
       # - ./webvirtcloud:/srv/webvirtcloud/webvirtcloud
     environment:
       KVM_HOST: "172.24.0.1"
       KVM_HOSTNAME: "localhost"
     networks:
-      internet:
-      # kvm_net:
+      - kvm_network
 
-  # nginx:
-    # image: weejewel/nginx-with-certbot
-    # container_name: nginx
-    # restart: unless-stopped
-    # ports:
-      # - "80:80"
-      # - "443:443"
-    # networks:
-      # - internet
-    # volumes:
-      # #- ./nginx/servers/:/etc/nginx/servers/
-      # #- ./nginx/auth/:/etc/nginx/auth/
-      # - ./nginx/.htpasswd:/etc/nginx/auth/.htpasswd
-      # - ./nginx/servers.conf:/etc/nginx/servers/servers.conf
-      # - ./nginx/certificate/:/etc/nginx/certificate
-      # - ./nginx/letsencrypt/:/etc/letsencrypt/
+volumes:
+  webvirtcloud_data:
+    name: webvirtcloud_data
+
+networks:
+  kvm_network:
+    name: kvm_network
+    driver: macvlan
+    driver_opts:
+      macvlan_mode: bridge
+      parent: virbr0
