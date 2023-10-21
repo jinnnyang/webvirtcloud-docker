@@ -9,7 +9,7 @@ services:
       tags:
         - jinnyang/webvirtcloud:0.0.1
         - webvirtcloud:0.0.1
-    container_name: webvirtcloud
+    container_name: WebVirtCloud
     restart: unless-stopped
     # ports:
     #   - 80:80
@@ -19,7 +19,7 @@ services:
       - webvirtcloud_data:/srv/webvirtcloud/data
     networks:
       kvm_network:
-        # ipv4_address: 192.168.122.2
+        ipv4_address: 192.168.122.2
       application_network:
     extra_hosts:
       nas.local: 192.168.31.6
