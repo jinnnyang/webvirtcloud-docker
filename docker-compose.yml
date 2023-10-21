@@ -2,7 +2,7 @@ version: "3"
 
 services:
   webvirtcloud:
-    image: webvirtcloud:0.0.1
+    image: jinnyang/webvirtcloud:0.0.1
     build: 
       context: ./
       dockerfile: Dockerfile
