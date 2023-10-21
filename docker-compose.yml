@@ -34,11 +34,14 @@ networks:
     name: kvm_network
     ipam:
       driver: macvlan
-      config:
-        - subnet: 10.30.140.0/22
-          gateway: 10.30.143.254
       options:
         macvlan_mode: bridge
         parent: virbr0
+        config:
+          - subnet: 192.168.122.0/24
+            gateway: 192.168.122.1
   internet:
     name: webvirtcloud_network
+    ipam:
+      driver: bridge
+          
