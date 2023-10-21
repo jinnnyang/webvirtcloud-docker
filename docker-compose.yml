@@ -19,7 +19,7 @@ services:
       - webvirtcloud_data:/srv/webvirtcloud/data
     networks:
       - kvm_network
-      - default
+      - bridge
     extra_hosts:
       nas.local: 192.168.31.6
       nexus.nas.local: 192.168.31.6
@@ -36,7 +36,3 @@ networks:
     driver_opts:
       macvlan_mode: bridge
       parent: virbr0
-  
-  default:
-    name: bridge
-    external: True
