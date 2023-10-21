@@ -19,7 +19,7 @@ services:
       - webvirtcloud_data:/srv/webvirtcloud/data
     networks:
       - kvm_network
-      - internet
+      - bridge
     extra_hosts:
       nas.local: 192.168.31.6
       nexus.nas.local: 192.168.31.6
@@ -41,9 +41,4 @@ networks:
       config:
         - subnet: 192.168.122.0/24
           gateway: 192.168.122.1
-
-  internet:
-    name: webvirtcloud_network
-    ipam:
-      driver: bridge
           
