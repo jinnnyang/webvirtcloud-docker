@@ -11,8 +11,8 @@ services:
         - webvirtcloud:0.0.1
     container_name: webvirtcloud
     restart: unless-stopped
-    ports:
-      - 80:80
+    # ports:
+    #   - 80:80
     volumes:
       - /var/run/libvirt/:/var/run/libvirt/
       - /dev/pts/:/dev/pts/
