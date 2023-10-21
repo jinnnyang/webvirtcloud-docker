@@ -36,6 +36,11 @@ networks:
     driver_opts:
       parent: virbr0
       macvlan_mode: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.122.0/24
+          gateway: 192.168.122.1
 
   internet:
     name: webvirtcloud_network
