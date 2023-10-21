@@ -37,9 +37,9 @@ networks:
       options:
         macvlan_mode: bridge
         parent: virbr0
-        config:
-          - subnet: 192.168.122.0/24
-            gateway: 192.168.122.1
+      config:
+        - subnet: 192.168.122.0/24
+          gateway: 192.168.122.1
   internet:
     name: webvirtcloud_network
     ipam:
